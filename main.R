@@ -2,19 +2,20 @@ setwd("C:/Users/Itachi Bal/Desktop/GLM")
 data <- read.table("stor1.txt",header=TRUE)
 names(data)
 #--------------------------------------------#making the dummy variables into factors.
-data1<-subset(data[,c(22,23,24,25,26)])
-data2<-subset(data[,c(16,17,18,19,20)])
+data1<-subset(data[,c(22,23,24,25,26)]) #extracting the desired columns
+data2<-subset(data[,c(16,17,18,19,20)]) 
 data1<-subset(data1[,c(-1)])
 data2<-subset(data2[,c(-1)])
 data1<-as.matrix(data1)
 data2<-as.matrix(data2)
+#---------------------------------------------# this snippet is responsible for converting the dummy variables into factors.
 region_factor<-factor((data1 %*%(1:ncol(data1)))+1, 
        labels = c("Aspect4Flat", colnames(data1)))
 forest_factor<-factor((data2 %*%(1:ncol(data2))) + 1, 
                       labels = c("SMBDLeav", colnames(data2)))
 #----------------------------------------------#making the dummy variables into factors.
-my_data <- read.table("stor1.txt",header=TRUE)
-org_data <- read.table("stor1.txt",header=TRUE)
+my_data <- read.table("stor1.txt",header=TRUE) # this data object is used for manipulating the data
+org_data <- read.table("stor1.txt",header=TRUE) # this data object is used to compare with the manipulated data
 
 org_data <- subset(org_data[,c((27:28))])
 
@@ -30,11 +31,14 @@ ncol(my_data)
 summary(my_data)
 #glm1<-glm(as.factor(Pellet_2009)~Elevation+Slope+VRM+kNN+Distpow+Distgruva+Distsmall
  #        +region_factor+forest_factor, family=binomial(link=logit),data=my_data)
+#----------------GLM functions that are experimented in this project
 #glm1<-glm(as.factor(Pellet_2009)~Elevation+kNN+Distpow+Distbig+Distgruva
  #         , family=binomial(link=logit),data=my_data)
 #summary(glm1)
 #plot(glm1)
-#crPlots(glm1)
+#crPlots(glm1) 
+#------we can use crplots for analyzing the residual information available from the GLM models
+
 #(Elevation+Slope+VRM+kNN+Distpow+Distroad+Distbig+Distgruva+Distsmall+Pellet_2009+Pellet_2010+region_factor+forest_factor)
 
 #glm2<-glm(as.factor(Pellet_2010)~Elevation+kNN+Distpow+Distbig+Distgruva
@@ -84,7 +88,7 @@ corrplot(variables_correlation, method="circle",
 ## we are just considering how many times it came to the pellet circle.
 ## we are trying to estimate the response.
 glm1<-glm(pellet_factor~Elevation+Slope+VRM+kNN+Distpow+Distgruva+Distsmall
-          +forest_factor, family=binomial(link=logit),data=my_data)# we modelled it by using step function
+          +forest_factor, family=binomial(link=logit),data=my_data)# we modelled it by using a manual step function
 summary(glm1)
 plot(glm1)
 crPlots(glm1)
